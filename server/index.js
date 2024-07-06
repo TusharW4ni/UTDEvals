@@ -1,16 +1,17 @@
 const express = require("express");
 const cors = require("cors");
-const mysql = require("mysql");
+const mysql = require("mysql2");
+const dotenv = require("dotenv").config();
 
 const app = express();
 
 app.use(cors());
 
 const db = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "Mysqlpass@123",
-  database: "UTDEvals",
+  host: process.env.HOST,
+  user: process.env.USR,
+  password: process.env.PSSWRD,
+  database: process.env.DB,
 });
 
 function executeQuery(pool, query) {
@@ -39,7 +40,7 @@ function executeQuery(pool, query) {
 
 app.get("/", async (req, res) => {
   try {
-    const results = await executeQuery(db, "SELECT * FROM TESTTABLE");
+    const results = await executeQuery(db, "SELECT * FROM Course");
     res.send(results);
   } catch (error) {
     console.error("Error in GET /:", error);

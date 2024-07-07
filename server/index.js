@@ -83,6 +83,50 @@ app.post("/search/courses", async (req, res) => {
   }
 });
 
+app.post("/search/instructors", async (req, res) => {
+  const { searchTerm } = req.body;
+  try {
+    const results = await executeQuery(
+      db,
+      `SELECT Course.id, Course.en, Course.rc, Question.description, Question.tag, Instructor.fName, Instructor.lName, sd, d, n, a, sa, tot, med, mu, sig FROM Course, Evaluation, Question, Instructor WHERE Course.id = Evaluation.cid AND Question.id = Evaluation.qid AND Course.instructId = Instructor.id AND (Instructor.fName LIKE "%${searchTerm}%" OR Instructor.lName LIKE "%${searchTerm}%" OR CONCAT(Instructor.fName, ' ', Instructor.lName) LIKE "%${searchTerm}%");`
+    );
+
+    console.log("results", results);
+
+    const transformedResults = {};
+
+    results.forEach((row) => {
+      if (!transformedResults[row.id]) {
+        transformedResults[row.id] = {
+          id: row.id,
+          fName: row.fName,
+          lName: row.lName,
+          en: row.en,
+          rc: row.rc,
+          questions: [],
+        };
+      }
+      transformedResults[row.id].questions.push({
+        description: row.description,
+        tag: row.tag,
+        sd: row.sd,
+        d: row.d,
+        n: row.n,
+        a: row.a,
+        sa: row.sa,
+        tot: row.tot,
+        med: row.med,
+        mu: row.mu,
+        sig: row.sig,
+      });
+    });
+    res.send(Object.values(transformedResults));
+  } catch (error) {
+    console.error("Error in POST /search", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 // --------------------------------------------------------------------------
 
 app.listen(8080, () => {

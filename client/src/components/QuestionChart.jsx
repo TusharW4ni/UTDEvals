@@ -54,7 +54,7 @@ const generateChartData = (question) => {
   return data;
 };
 
-const QuestionChart = ({ question, chartHeight = 300 }) => {
+export default function QuestionChart({ question, chartHeight = 300 }) {
   const options = {
     indexAxis: "y",
     height: chartHeight,
@@ -88,7 +88,6 @@ const QuestionChart = ({ question, chartHeight = 300 }) => {
   return (
     <div>
       <p className="text-xl underline">{question.description}</p>
-      {/* <Bar data={generateChartData(question)} options={options} /> */}
       <div style={{ height: `${chartHeight}px`, width: "100%" }}>
         <Bar data={generateChartData(question)} options={options} />
       </div>
@@ -100,6 +99,4 @@ const QuestionChart = ({ question, chartHeight = 300 }) => {
       </div>
     </div>
   );
-};
-
-export default QuestionChart;
+}

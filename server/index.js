@@ -40,12 +40,12 @@ function executeQuery(pool, query) {
 // --------------------------------------------------------------------------
 
 app.post("/search/courses", async (req, res) => {
-  console.log("req.body", req.body);
+  // console.log("req.body", req.body);
   const { searchTerm } = req.body;
   try {
     const results = await executeQuery(
       db,
-      `SELECT Course.id, Question.description, Question.tag, Instructor.fName, Instructor.lName, sd, d, n, a, sa, tot, med, mu, sig
+      `SELECT Course.id, Course.en, Course.rc, Question.description, Question.tag, Instructor.fName, Instructor.lName, sd, d, n, a, sa, tot, med, mu, sig
       FROM Course, Question, Evaluation, Instructor
       WHERE Course.id LIKE "%${searchTerm}%" AND Course.id=Evaluation.cid AND Question.id=Evaluation.qid AND Instructor.id=Course.instructId
       ORDER BY Course.id ASC;`
@@ -55,14 +55,16 @@ app.post("/search/courses", async (req, res) => {
       if (!transformedResults[row.id]) {
         transformedResults[row.id] = {
           id: row.id,
+          fName: row.fName,
+          lName: row.lName,
+          en: row.en,
+          rc: row.rc,
           questions: [],
         };
       }
       transformedResults[row.id].questions.push({
         description: row.description,
         tag: row.tag,
-        fName: row.fName,
-        lName: row.lName,
         sd: row.sd,
         d: row.d,
         n: row.n,

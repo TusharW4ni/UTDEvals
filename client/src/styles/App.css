@@ -1,0 +1,32 @@
+.spinner_9Mto {
+  animation: spinner_5GqJ 1.6s linear infinite;
+  animation-delay: -1.6s;
+}
+
+.spinner_bb12 {
+  animation-delay: -1s;
+}
+
+@keyframes spinner_5GqJ {
+  12.5% {
+    transform: translate(12px, 0);
+  }
+  25% {
+    transform: translate(12px, 0);
+  }
+  37.5% {
+    transform: translate(12px, 12px);
+  }
+  50% {
+    transform: translate(12px, 12px);
+  }
+  62.5% {
+    transform: translate(0, 12px);
+  }
+  75% {
+    transform: translate(0, 12px);
+  }
+  87.5% {
+    transform: translate(0, 0);
+  }
+}

@@ -47,7 +47,7 @@ app.post("/search/courses", async (req, res) => {
       db,
       `SELECT Course.id, Course.en, Course.rc, Question.description, Question.tag, Instructor.fName, Instructor.lName, sd, d, n, a, sa, tot, med, mu, sig
       FROM Course, Question, Evaluation, Instructor
-      WHERE Course.id LIKE "%${searchTerm}%" AND Course.id=Evaluation.cid AND Question.id=Evaluation.qid AND Instructor.id=Course.instructId
+      WHERE (Course.id LIKE "%${searchTerm}%" OR Course.title LIKE "%${searchTerm}%") AND Course.id=Evaluation.cid AND Question.id=Evaluation.qid AND Instructor.id=Course.instructId
       ORDER BY Course.id ASC;`
     );
     const transformedResults = {};
